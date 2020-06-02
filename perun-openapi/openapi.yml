@@ -4270,6 +4270,412 @@ paths:
   #                                               #
   #################################################
 
+  /urlinjsonout/membersManager/deleteMember:
+    post:
+      tags:
+        - MembersManager
+      operationId: deleteMember
+      summary: Deletes only member data appropriated by member id.
+      parameters:
+        - $ref: '#/components/parameters/member'
+      responses:
+        '200':
+          $ref: '#/components/responses/VoidResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/deleteMembers:
+    post:
+      tags:
+        - MembersManager
+      operationId: deleteMember
+      summary: Delete members with given ids. It is possible to delete members from multiple vos.
+      parameters:
+        - $ref: '#/components/parameters/members'
+      responses:
+        '200':
+          $ref: '#/components/responses/VoidResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createSpecificMember/g:
+    post:
+      tags:
+        - MembersManager
+      operationId: createSpecificMember
+      summary: Creates a new member from candidate which is prepared for creating specificUser.
+      description: This method also add user to all groups in list.
+      * In list specificUserOwners can't be specificUser, only normal users are allowed. Empty list of groups is ok, the behavior is then same like in the method without list of groups.
+      parameters:
+        - $ref: '#/components/parameters/groups'
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/candidate'
+        - $ref: '#/components/parameters/specificUserOwners'
+        - $ref: '#/components/parameters/specificUserType'
+      responses:
+        '200':
+          $ref: '#/components/responses/Member'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createSpecificMember:
+    post:
+      tags:
+        - MembersManager
+      operationId: createSpecificMember
+      summary: Creates a new member from candidate which is prepared for creating specificUser.
+      description: In list specificUserOwners can't be specificUser, only normal users are allowed.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/candidate'
+        - $ref: '#/components/parameters/specificUserOwners'
+        - $ref: '#/components/parameters/specificUserType'
+      responses:
+        '200':
+          $ref: '#/components/responses/Member'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createSponsoredAccount:
+    post:
+      tags:
+        - MembersManager
+      operationId: createSponsoredAccount
+      summary: Creates a new SPONSORED member from given parameters map.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/parameters'
+        - $ref: '#/components/parameters/namespace'
+        - $ref: '#/components/parameters/extSource'
+        - $ref: '#/components/parameters/extSourcePostfix'
+        - $ref: '#/components/parameters/loa'
+      responses:
+        '200':
+          $ref: '#/components/responses/Member'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createSponsoredMember/:
+    post:
+      tags:
+        - MembersManager
+      operationId: createSponsoredMember
+      summary: Creates a new sponsored member in a given VO and namespace.
+      description: Can be called either by a user with role SPONSOR, in that case the user becomes the sponsor, or by a user with role REGISTRAR that must specify the sponsoring user using ID.
+      parameters:
+        - $ref: '#/components/parameters/password'
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/namespace'
+        - $ref: '#/components/parameters/sponsor'
+        - $ref: '#/components/parameters/firstName'
+        - $ref: '#/components/parameters/lastName'
+        - $ref: '#/components/parameters/titleBefore'
+        - $ref: '#/components/parameters/titleAfter'
+      responses:
+        '200':
+          $ref: '#/components/responses/RichMember'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createSponsoredMember/guest:
+    post:
+      tags:
+        - MembersManager
+      operationId: createSponsoredMember
+      summary: Creates a new sponsored member in a given VO and namespace.
+      description: Can be called either by a user with role SPONSOR, in that case the user becomes the sponsor, or by a user with role REGISTRAR that must specify the sponsoring user using ID.
+      parameters:
+        - $ref: '#/components/parameters/password'
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/namespace'
+        - $ref: '#/components/parameters/sponsor'
+        - $ref: '#/components/parameters/firstName'
+        - $ref: '#/components/parameters/lastName'
+        - $ref: '#/components/parameters/titleBefore'
+        - $ref: '#/components/parameters/titleAfter'
+      responses:
+        '200':
+          $ref: '#/components/responses/RichMember'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/setSponsorshipForMember:
+    post:
+      tags:
+        - MembersManager
+      operationId: setSponsorshipForMember
+      summary: Transform non-sponsored member to sponsored one with defined sponsor
+      parameters:
+        - $ref: '#/components/parameters/sponsoredMember'
+        - $ref: '#/components/parameters/sponsor'
+      responses:
+        '200':
+          $ref: '#/components/responses/RichMember'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/unsetSponsorshipForMember:
+    post:
+      tags:
+        - MembersManager
+      operationId: unsetSponsorshipForMember
+      summary: Transform sponsored member to non-sponsored one. Delete all his sponsors.
+      parameters:
+        - $ref: '#/components/parameters/sponsoredMember'
+      responses:
+        '200':
+          $ref: '#/components/responses/RichMember'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+
+  /json/membersManager/sponsorMember:
+    post:
+      tags:
+        - MembersManager
+      operationId: sponsorMember
+      summary: For an existing member, assigns a new sponsor.
+      description: Can be called only by VO admin.
+      parameters:
+        - $ref: '#/components/parameters/member'
+        - $ref: '#/components/parameters/sponsor'
+      responses:
+        '200':
+          $ref: '#/components/responses/RichMember'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/removeSponsor:
+    post:
+      tags:
+        - MembersManager
+      operationId: sponsorMember
+      summary: Removes sponsor of existing member.
+      description: Can be called only by VO admin.
+      parameters:
+        - $ref: '#/components/parameters/member'
+        - $ref: '#/components/parameters/sponsor'
+      responses:
+        '200':
+          $ref: '#/components/responses/void'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/extendExpirationForSponsoredMember:
+    post:
+      tags:
+        - MembersManager
+      operationId: extendExpirationForSponsoredMember
+      summary: Changes expiration date for a sponsored member according to VO rules.
+      description: Can be called only by REGISTRAR or VOADMIN.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/member'
+        - $ref: '#/components/parameters/sponsor'
+      responses:
+        '200':
+          $ref: '#/components/responses/string'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getSponsoredMembers/v-s:
+    get:
+      tags:
+        - MembersManager
+      operationId: getSponsoredMembers
+      summary: Gets members sponsored by a given user in a VO. User is specified by user id.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/sponsor'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMember'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+
+  /json/membersManager/getSponsoredMembers/v:
+    get:
+      tags:
+        - MembersManager
+      operationId: getSponsoredMembers
+      summary: Gets members from VO who are sponsored.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMember'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getSponsoredMembers/v-s-a:
+    get:
+      tags:
+        - MembersManager
+      operationId: getSponsoredMembers
+      summary: Gets members with attributes sponsored by a given user in a VO. User is specified by user id.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/sponsor'
+        - $ref: '#/components/parameters/attrNames'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+
+  /json/membersManager/getSponsors/m-a:
+    get:
+      tags:
+        - MembersManager
+      operationId: getSponsors
+      summary: Gets users sponsoring a given user in a VO.
+      description: Can be called by user in role REGISTRAR.
+      parameters:
+        - $ref: '#/components/parameters/member'
+        - $ref: '#/components/parameters/attrNames'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichUserResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getSponsors/v-e-e-a:
+    get:
+      tags:
+        - MembersManager
+      operationId: getSponsors
+      summary: Gets users sponsoring a given user in a VO.
+      description: Can be called by user in role REGISTRAR.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/extSourceName'
+        - $ref: '#/components/parameters/extLogin'
+        - $ref: '#/components/parameters/attrNames'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichUserResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createMember/v-e-e-l-c:
+    post:
+      tags:
+        - MembersManager
+      operationId: createMember
+      summary: Creates a new member and sets all member's attributes from the candidate.
+      description: Also stores the associated user if doesn't exist. This method is used by the registrar.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/extSourceName'
+        - $ref: '#/components/parameters/extSourceType'
+        - $ref: '#/components/parameters/login'
+        - $ref: '#/components/parameters/candidate'
+      responses:
+        '200':
+          $ref: '#/components/responses/MemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createMember/v-e-e-l-c-g:
+    post:
+      tags:
+        - MembersManager
+      operationId: createMember
+      summary: Creates a new member and sets all member's attributes from the candidate.
+      description: Also stores the associated user if doesn't exist. This method is used by the registrar.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/extSourceName'
+        - $ref: '#/components/parameters/extSourceType'
+        - $ref: '#/components/parameters/login'
+        - $ref: '#/components/parameters/candidate'
+        - $ref: '#/components/parameters/groups'
+      responses:
+        '200':
+          $ref: '#/components/responses/MemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createMember/v-u:
+    post:
+      tags:
+        - MembersManager
+      operationId: createMember
+      summary: Creates a new member from user.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/user'
+      responses:
+        '200':
+          $ref: '#/components/responses/MemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createMember/v-u-g:
+    post:
+      tags:
+        - MembersManager
+      operationId: createMember
+      summary: Creates a new member from user.
+      description: his method also add user to all groups in list. Empty list of groups is ok, the behavior is then same like in the method without list of groups.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/user'
+        - $ref: '#/components/parameters/groups'
+      responses:
+        '200':
+          $ref: '#/components/responses/MemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createMember/v-c:
+    post:
+      tags:
+        - MembersManager
+      operationId: createMember
+      summary: Creates a new member from candidate returned by the method VosManager.findCandidates which fills Candidate.userExtSource.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/candidate'
+      responses:
+        '200':
+          $ref: '#/components/responses/MemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createMember/v-c-g:
+    post:
+      tags:
+        - MembersManager
+      operationId: createMember
+      summary: Creates a new member from candidate returned by the method VosManager.findCandidates which fills Candidate.userExtSource.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/candidate'
+        - $ref: '#/components/parameters/groups'
+      responses:
+        '200':
+          $ref: '#/components/responses/MemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getMemberByUserExtSource:
+    get:
+      tags:
+        - MembersManager
+      operationId: getMemberByUserExtSource
+      summary: Find member of a VO by his login in an external source.
+      parameters:
+        - $ref: '#/components/parameters/vo'
+        - $ref: '#/components/parameters/userExtSource'
+      responses:
+        '200':
+          $ref: '#/components/responses/MemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
   /json/membersManager/getMemberById:
     get:
       tags:
@@ -4282,6 +4688,197 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getRichMembers:
+    get:
+      tags:
+        - MembersManager
+      operationId: getRichMembers
+      summary: Returns all members of a VO with additional information.
+      description: Get RichMember without attributes
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - { name: status, in: query, required: false, schema: { $ref: '#/components/schemas/VoMemberStatuses'}, description: 'optional status'}
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getCompleteRichMembers/v-a-a:
+    get:
+      tags:
+        - MembersManager
+      operationId: getCompleteRichMembers
+      summary: Get all RichMembers with attributes specific for list of attrsNames from the vo and have only status which is contain in list of statuses.
+      description: If attrsNames is empty or null return all attributes for specific richMembers. If listOfStatuses is empty or null, return all possible statuses.
+      parameters:
+        - $ref: '#/components/parameters/void'
+        - $ref: '#/components/parameters/attrsNames'
+        - $ref: '#/components/parameters/allowedStatuses'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getCompleteRichMembers/v-a:
+    get:
+      tags:
+        - MembersManager
+      operationId: getCompleteRichMembers
+      summary: Get all RichMembers with attributes specific for list of attrsNames from the vo.
+      description: If attrsNames is empty or null return all attributes for specific richMembers.
+      parameters:
+        - $ref: '#/components/parameters/void'
+        - $ref: '#/components/parameters/attrsNames'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getCompleteRichMembers/g-a-a-l:
+    get:
+      tags:
+        - MembersManager
+      operationId: getCompleteRichMembers
+      summary: Get all RichMembers with attributes specific for list of attrsNames from the group and have only status which is contain in list of statuses.
+      description: If attrsNames is empty or null return all attributes for specific richMembers. If listOfStatuses is empty or null, return all possible statuses.
+      parameters:
+        - $ref: '#/components/parameters/groupId'
+        - $ref: '#/components/parameters/attrsNames'
+        - $ref: '#/components/parameters/allowedStatuses'
+        - $ref: '#/components/parameters/lookingInParentGroup'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+
+  /json/membersManager/getCompleteRichMembers/g-a-l:
+    get:
+      tags:
+        - MembersManager
+      operationId: getCompleteRichMembers
+      summary: Get all RichMembers with attributes specific for list of attrsNames from the group.
+      description: If attrsNames is empty or null return all attributes for specific richMembers. If lookingInParentGroup is true, get all these richMembers only for parentGroup of this group. If this group is top level group, so get richMembers from members group.
+      parameters:
+        - $ref: '#/components/parameters/groupId'
+        - $ref: '#/components/parameters/attrsNames'
+        - $ref: '#/components/parameters/lookingInParentGroup'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getCompleteRichMembers/g-r-a-a:
+    get:
+      tags:
+        - MembersManager
+      operationId: getCompleteRichMembers
+      summary: Get all RichMembers with attributes specific for list of attrsNames. Attributes are defined by member (user) and resource (facility) objects. It returns also user-facility (in userAttributes of RichMember) and member-resource (in memberAttributes of RichMember) attributes. Members are defined by group and are filtered by list of allowed statuses.
+      parameters:
+        - $ref: '#/components/parameters/groupId'
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/attrsNames'
+        - $ref: '#/components/parameters/allowedStatuses'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getRichMembersWithAttributesByNames/v-a:
+    get:
+      tags:
+        - MembersManager
+      operationId: getRichMembersWichAttributesByNames
+      summary: Get RichMembers with Attributes but only with selected attributes from list attrsDef for vo.
+      parameters:
+        - $ref: '#/components/parameters/voId'
+        - $ref: '#/components/parameters/attrsNames'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getRichMembersWithAttributesByNames/g-a:
+    get:
+      tags:
+        - MembersManager
+      operationId: getRichMembersWichAttributesByNames
+      summary: Get RichMembers with Attributes but only with selected attributes from list attrsDef for group.
+      parameters:
+        - $ref: '#/components/parameters/groupId'
+        - $ref: '#/components/parameters/attrsNames'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getRichMembersWithAttributes/v-s:
+    get:
+      tags:
+        - MembersManager
+      operationId: getRichMembersWithAttributes
+      summary: Get all RichMembers of VO with specified status. RichMember object contains user, member, userExtSources and member/user attributes.
+      parameters:
+        - $ref: '#/components/parameters/voId'
+        - $ref: '#/components/parameters/status'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getRichMembersWithAttributes/v-a:
+    get:
+      tags:
+        - MembersManager
+      operationId: getRichMembersWithAttributes
+      summary: Get RichMembers with Attributes but only with selected attributes from list attrsDef for vo.
+      parameters:
+        - $ref: '#/components/parameters/voId'
+        - $ref: '#/components/parameters/attrsDef'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getRichMembersWithAttributes/g-a:
+    get:
+      tags:
+        - MembersManager
+      operationId: getRichMembersWithAttributes
+      summary: Get RichMembers with Attributes but only with selected attributes from list attrsDef for group.
+      parameters:
+        - $ref: '#/components/parameters/groupId'
+        - $ref: '#/components/parameters/attrsDef'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getRichMembersWithAttributes/v:
+    get:
+      tags:
+        - MembersManager
+      operationId: getRichMembersWithAttributes
+      summary: Get all RichMembers of VO. RichMember object contains user, member, userExtSources and member/user attributes.
+      parameters:
+        - $ref: '#/components/parameters/voId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
         default:
           $ref: '#/components/responses/ExceptionResponse'
 
@@ -4312,6 +4909,290 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/RichMemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getMembersCount:
+    get:
+      tags:
+        - MembersManager
+      operationId: getMembersCount
+      summary: Returns count of VO members with specified status.
+      description: Get richMember with member/user attributes
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/RichMemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/deleteAllMembers:
+    post:
+      tags:
+        - MembersManager
+      operationId: deleteAllMembers
+      summary: Deletes all VO members.
+      parameters:
+        - $ref: '#/components/parameters/voId'
+      responses:
+        '200':
+          $ref: '#/components/responses/VoidResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findMembersByName:
+    get:
+      tags:
+        - MembersManager
+      operationId: findMembersByName
+      summary: Searches for members by their name.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findMembersByNameInVo:
+    get:
+      tags:
+        - MembersManager
+      operationId: findMembersByNameInVo
+      summary: Searches for members in a VO by their name.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/voId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findMembersInGroup:
+    get:
+      tags:
+        - MembersManager
+      operationId: findMembersInGroup
+      summary: Searches for members in a Group by their name.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/groupId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findMembersInParentGroup:
+    get:
+      tags:
+        - MembersManager
+      operationId: findMembersInParentGroup
+      summary: Searches for members in a parent group of supplied group by their name.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/groupId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findRichMembersInGroup:
+    get:
+      tags:
+        - MembersManager
+      operationId: findRichMembersInGroup
+      summary: Searches for rich members in a Group by their name.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/groupId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findRichMembersInParentGroup:
+    get:
+      tags:
+        - MembersManager
+      operationId: findRichMembersInParentGroup
+      summary: Searches for rich members in a parent group of supplied group by their name.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/groupId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findRichMembersInVo:
+    get:
+      tags:
+        - MembersManager
+      operationId: findRichMembersInVo
+      summary: Searches for members in a VO.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/voId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findRichMembersWithAttributesInVo:
+    get:
+      tags:
+        - MembersManager
+      operationId: findRichMembersWithAttributesInVo
+      summary: Searches for members in a VO, listing with additional attributes.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/voId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findCompleteRichMembers/v-a-a-s:
+    get:
+      tags:
+        - MembersManager
+      operationId: findCompleteRichMembers
+      summary: Return list of richMembers for specific vo by the searchString with attributes specific for list of attrsNames and who have only status which is contain in list of statuses.
+      description: If attrsNames is empty or null return all attributes for specific richMembers. If listOfStatuses is empty or null, return all possible statuses.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/voId'
+        - $ref: '#/components/parameters/attrsNames'
+        - $ref: '#/components/parameters/allowedStatuses'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findCompleteRichMembers/v-a-s:
+    get:
+      tags:
+        - MembersManager
+      operationId: findCompleteRichMembers
+      summary: Return list of richMembers for specific vo by the searchString with attrs specific for list of attrsNames.
+      description: If attrsNames is empty or null return all attributes for specific richMembers.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/voId'
+        - $ref: '#/components/parameters/attrsNames'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findCompleteRichMembers/g-a-a-s-l:
+    get:
+      tags:
+        - MembersManager
+      operationId: findCompleteRichMembers
+      summary: Return list of richMembers for specific group by the searchString with attributes specific for list of attrsNames and who have only status which is contain in list of statuses.
+      description: If attrsNames is empty or null return all attributes for specific richMembers. If listOfStatuses is empty or null, return all possible statuses. If lookingInParentGroup is true, find all these richMembers only for parentGroup of this group. If this group is top level group, so find richMembers from members group.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/groupId'
+        - $ref: '#/components/parameters/attrsNames'
+        - $ref: '#/components/parameters/allowedStatuses'
+        - $ref: '#/components/parameters/lookingInParentGroup'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findCompleteRichMembers/a-a-s:
+    get:
+      tags:
+        - MembersManager
+      operationId: findCompleteRichMembers
+      summary: Return list of richMembers from perun by the searchString with attributes specific for list of attrsNames and who have only status which is contain in list of statuses.
+      description: If attrsNames is empty or null return all attributes for specific richMembers. If listOfStatuses is empty or null, return all possible statuses.
+      parameters:
+        { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/attrsNames'
+        - $ref: '#/components/parameters/allowedStatuses'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/findCompleteRichMembers/g-a-s-l:
+    get:
+      tags:
+        - MembersManager
+      operationId: findCompleteRichMembers
+      summary: Return list of richMembers for specific group by the searchString with attrs specific for list of attrsNames.
+      description: If attrsNames is empty or null return all attributes for specific richMembers. If lookingInParentGroup is true, find all these richMembers only for parentGroup of this group. If this group is top level group, so find richMembers from members group.
+      parameters:
+        - { name: searchString, schema: { type: string }, required: true, in: query, description: 'string to search by'}
+        - $ref: '#/components/parameters/groupId'
+        - $ref: '#/components/parameters/attrsNames'
+        - $ref: '#/components/parameters/lookingInParentGroup'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/setStatus:
+    post:
+      tags:
+        - MembersManager
+      operationId: setStatus
+      summary: Set membership status of a member.
+      parameters:
+        - $ref: '#/components/parameters/memberId'
+        - { name: status, schema: { type: string }, required: true, in: query, description: 'VALID | INVALID | SUSPENDED | EXPIRED | DISABLED'}
+        - { name: message, schema: { type: string }, required: false, in: query, description: 'reason for suspension'}
+      responses:
+        '200':
+          $ref: '#/components/responses/MemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/suspendMemberTo:
+    post:
+      tags:
+        - MembersManager
+      operationId: suspendMemberTo
+      summary: Set date to which will be member suspended in his VO.
+      description: For almost unlimited time please use time in the far future.
+      parameters:
+        - $ref: '#/components/parameters/memberId'
+        - { name: suspendedTo, schema: { type: string }, required: true, in: query, description: 'String date in format yyyy-MM-dd to which member will be suspended'}
+      responses:
+        '200':
+          $ref: '#/components/responses/VoidResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/unsuspendMember:
+    post:
+      tags:
+        - MembersManager
+      operationId: unsuspendMember
+      summary: Remove suspend state from Member - remove date to which member should be considered as suspended in the VO.
+      description: 'WARNING:' this will remove the date even if it is in the past (so member is no longer considered as suspended)
+      parameters:
+        - $ref: '#/components/parameters/memberId'
+      responses:
+        '200':
+          $ref: '#/components/responses/VoidResponse'
         default:
           $ref: '#/components/responses/ExceptionResponse'
 

@@ -1047,7 +1047,6 @@ public enum MembersManagerMethod implements ManagerMethod {
  	 * @param attrsNames List<String> Attribute names
  	 * @param allowedStatuses List<String> Allowed statuses
  	 * @param searchString String String to search by
- 	 * @param lookingInParentGroup boolean If true, look up in a parent group
  	 * @return List<RichMember> List of founded richMembers with specific attributes from perun for searchString
  	 */
 	/*#
