@@ -834,7 +834,8 @@ components:
         service: { $ref: '#/components/schemas/Service' }
         facility: { $ref: '#/components/schemas/Facility' }
         task: { $ref: '#/components/schemas/Task' }
-        isBlockedOnFacility: { type: boolean }
+        blockedOnFacility: { type: boolean }
+        blockedGlobally: { type: boolean }
         hasDestinations: { type: boolean }
 
     MailText:
@@ -12442,6 +12443,18 @@ paths:
           $ref: '#/components/responses/VoidResponse'
         default:
           $ref: '#/components/responses/ExceptionResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: deleteTaskObject
+              description: "input to deleteTaskObject"
+              type: object
+              required:
+                - task
+              properties:
+                task:  { type: integer, description: "task id", nullable: false }
 
   #################################################
   #                                               #
