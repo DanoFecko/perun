@@ -8109,6 +8109,40 @@ paths:
         default:
           $ref: '#/components/responses/ExceptionResponse'
 
+  /json/membersManager/getSponsoredMembers/v:
+    get:
+      tags:
+        - MembersManager
+      operationId: getSponsoredMembers
+      summary: Gets members from VO who are sponsored.
+      parameters:
+        - $ref: '#/components/parameters/voId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createSponsoredMember/withFullName:
+    post:
+      tags:
+        - MembersManager
+      operationId: createSponsoredMember
+      summary: Creates a new sponsored member in a given VO and namespace.
+      parameters:
+        - $ref: '#/components/parameters/firstName'
+        - $ref: '#/components/parameters/lastName'
+        - $ref: '#/components/parameters/titleBefore'
+        - $ref: '#/components/parameters/titleAfter'
+        - $ref: '#/components/parameters/password'
+        - $ref: '#/components/parameters/voId'
+        - $ref: '#/components/parameters/sponsor'
+        - $ref: '#/components/parameters/namespace'
+      responses:
+        '200':
+          $ref: '#/components/responses/RichMemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
 
   #################################################
   #                                               #
