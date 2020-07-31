@@ -1899,6 +1899,38 @@ components:
       in: query
       required: true
 
+    force:
+      name: force
+      description: "force"
+      schema:
+        type: boolean
+      in: query
+      required: true
+
+    sourceUser:
+      name: sourceUser
+      description: "id of User"
+      schema:
+        type: integer
+      in: query
+      required: true
+
+    targetUser:
+      name: targetUser
+      description: "id of User"
+      schema:
+        type: integer
+      in: query
+      required: true
+
+    userExtSource:
+      name: userExtSource
+      description: "id user ext source"
+      schema:
+        type: integer
+      in: query
+      required: true
+
     specificUserId:
       name: specificUser
       description: "id of specific User"
@@ -2398,6 +2430,87 @@ components:
       description: "Boolean specifying if only sponsored members should be returned"
       schema:
         type: boolean
+      in: query
+      required: true
+    namespace:
+      name: namespace
+      description: "namespace"
+      schema:
+        type: string
+      in: query
+      required: true
+
+    firstName:
+      name: firstName
+      description: firstName of user
+      schema:
+        type: string
+      in: query
+      required: true
+
+    lastName:
+      name: lastName
+      description: lastName of user
+      schema:
+        type: string
+      in: query
+      required: true
+
+    titleBefore:
+      name: titleBefore
+      description: title before name of user
+      schema:
+        type: string
+      in: query
+      required: false
+
+    titleAfter:
+      name: titleAfter
+      description: title after name of user
+      schema:
+        type: string
+      in: query
+      required: false
+
+    password:
+      name: password
+      description: password
+      schema:
+        type: string
+      in: query
+      required: true
+
+    sponsor:
+      name: sponsor
+      description: id of sponsor
+      schema:
+        type: integer
+      in: query
+      required: true
+
+    specificUserType:
+      name: specificUserType
+      description: "Type of user: SERVICE or SPONSORED"
+      schema:
+        type: string
+      in: query
+      required: true
+
+    specificUserOwners:
+      name: specificUserOwners
+      description: "List of users who own specificUser (can't be empty or contain specificUser)"
+      schema:
+        type: array
+        items:
+          $ref: "#/components/schemas/User"
+      in: query
+      required: true
+
+    login:
+      name: login
+      description: "login"
+      schema:
+        type: string
       in: query
       required: true
 #################################################
@@ -7600,6 +7713,37 @@ paths:
         default:
           $ref: '#/components/responses/ExceptionResponse'
 
+  /urlinjsonout/usersManager/moveUserExtSource:
+    post:
+      tags:
+        - UsersManager
+      operationId: moveUserExtSource
+      summary: Move user's external source from sourceUser to targetUser.
+      parameters:
+        - $ref: '#/components/parameters/sourceUser'
+        - $ref: '#/components/parameters/targetUser'
+        - $ref: '#/components/parameters/userExtSource'
+      responses:
+        '200':
+          $ref: '#/components/responses/VoidResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /urlinjsonout/usersManager/deleteUser:
+    post:
+      tags:
+        - UsersManager
+      operationId: deleteUser
+      summary: Deletes a user (force). Also removes associated members.
+      parameters:
+        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/force'
+      responses:
+        '200':
+          $ref: '#/components/responses/VoidResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
   #################################################
   #                                               #
   # MembersManager                                #
@@ -7881,6 +8025,87 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/getSponsoredMembers/v:
+    get:
+      tags:
+        - MembersManager
+      operationId: getSponsoredMembers
+      summary: Gets members from VO who are sponsored.
+      parameters:
+        - $ref: '#/components/parameters/voId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListOfRichMembersResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createSponsoredMember/withFullName:
+    post:
+      tags:
+        - MembersManager
+      operationId: createSponsoredMember
+      summary: Creates a new sponsored member in a given VO and namespace.
+      parameters:
+        - $ref: '#/components/parameters/firstName'
+        - $ref: '#/components/parameters/lastName'
+        - $ref: '#/components/parameters/titleBefore'
+        - $ref: '#/components/parameters/titleAfter'
+        - $ref: '#/components/parameters/password'
+        - $ref: '#/components/parameters/voId'
+        - $ref: '#/components/parameters/sponsor'
+        - $ref: '#/components/parameters/namespace'
+      responses:
+        '200':
+          $ref: '#/components/responses/RichMemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /json/membersManager/createSpecificMember:
+    post:
+      tags:
+        - MembersManager
+      operationId: createSpecificMember
+      summary: Creates a new member from candidate which is prepared for creating specificUser.
+      parameters:
+        - { name: candidate, in: query, required: true, schema: { $ref: '#/components/schemas/Candidate'}, description: 'candidate'}
+        - $ref: '#/components/parameters/voId'
+        - $ref: '#/components/parameters/specificUserType'
+        - $ref: '#/components/parameters/specificUserOwners'
+      responses:
+        '200':
+          $ref: '#/components/responses/MemberResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /urlinjsonout/membersManager/removeSponsor:
+    post:
+      tags:
+        - MembersManager
+      operationId: removeSponsor
+      summary: Removes sponsor of existing member.
+      parameters:
+        - $ref: '#/components/parameters/memberId'
+        - $ref: '#/components/parameters/sponsor'
+      responses:
+        '200':
+          $ref: '#/components/responses/VoidResponse'
+        default:
+          $ref: '#/components/responses/ExceptionResponse'
+
+  /urlinjsonout/membersManager/deleteMember:
+    post:
+      tags:
+        - MembersManager
+      operationId: deleteMember
+      summary: Deletes only member data appropriated by member id.
+      parameters:
+        - $ref: '#/components/parameters/memberId'
+      responses:
+        '200':
+          $ref: '#/components/responses/VoidResponse'
         default:
           $ref: '#/components/responses/ExceptionResponse'
 
