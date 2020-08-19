@@ -882,7 +882,7 @@ public class AuthzResolver {
 	 * @param complementaryObjectId id of object for which we will get richUser administrators
 	 * @param complementaryObjectName name of object for which we will get richUser administrators
 	 * @param specificAttributes list of specified attributes which are needed in object richUser
-	 * @param role expected role to filter managers by (PERUNADMIN | VOADMIN | GROUPADMIN | SELF | FACILITYADMIN | VOOBSERVER | TOPGROUPCREATOR | RESOURCEADMIN)
+	 * @param role expected role to filter managers by (PERUNADMIN | VOADMIN | GROUPADMIN | SELF | FACILITYADMIN | VOOBSERVER | TOPGROUPCREATOR | RESOURCEADMIN, SPONSOR)
 	 * @param onlyDirectAdmins if true, get only direct user administrators (if false, get both direct and indirect)
 	 * @param allUserAttributes if true, get all possible user attributes and ignore list of specificAttributes (if false, get only specific attributes)
 	 *

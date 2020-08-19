@@ -2432,13 +2432,6 @@ components:
         type: boolean
       in: query
       required: true
-    namespace:
-      name: namespace
-      description: "namespace"
-      schema:
-        type: string
-      in: query
-      required: true
 
     firstName:
       name: firstName
@@ -2472,14 +2465,6 @@ components:
       in: query
       required: false
 
-    password:
-      name: password
-      description: password
-      schema:
-        type: string
-      in: query
-      required: true
-
     sponsor:
       name: sponsor
       description: id of sponsor
@@ -2506,13 +2491,6 @@ components:
       in: query
       required: true
 
-    login:
-      name: login
-      description: "login"
-      schema:
-        type: string
-      in: query
-      required: true
 #################################################
 #                                               #
 # TAGS - documentation for groups of operations #
@@ -7900,19 +7878,6 @@ paths:
         default:
           $ref: '#/components/responses/ExceptionResponse'
 
-  /json/membersManager/getSponsoredMembers/v:
-    get:
-      tags:
-        - MembersManager
-      operationId: getSponsoredMembers
-      summary: Gets members from VO who are sponsored.
-      parameters:
-        - $ref: '#/components/parameters/voId'
-      responses:
-        '200':
-          $ref: '#/components/responses/ListOfRichMembersResponse'
-        default:
-          $ref: '#/components/responses/ExceptionResponse'
 
   /json/membersManager/createSponsoredMember/withFullName:
     post:
@@ -8025,122 +7990,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ListOfRichMembersResponse'
-        default:
-          $ref: '#/components/responses/ExceptionResponse'
-
-  /json/membersManager/getSponsoredMembers/v:
-    get:
-      tags:
-        - MembersManager
-      operationId: getSponsoredMembers
-      summary: Gets members from VO who are sponsored.
-      parameters:
-        - $ref: '#/components/parameters/voId'
-      responses:
-        '200':
-          $ref: '#/components/responses/ListOfRichMembersResponse'
-        default:
-          $ref: '#/components/responses/ExceptionResponse'
-
-  /json/membersManager/createSponsoredMember/withFullName:
-    post:
-      tags:
-        - MembersManager
-      operationId: createSponsoredMember
-      summary: Creates a new sponsored member in a given VO and namespace.
-      parameters:
-        - $ref: '#/components/parameters/firstName'
-        - $ref: '#/components/parameters/lastName'
-        - $ref: '#/components/parameters/titleBefore'
-        - $ref: '#/components/parameters/titleAfter'
-        - $ref: '#/components/parameters/password'
-        - $ref: '#/components/parameters/voId'
-        - $ref: '#/components/parameters/sponsor'
-        - $ref: '#/components/parameters/namespace'
-      responses:
-        '200':
-          $ref: '#/components/responses/RichMemberResponse'
-        default:
-          $ref: '#/components/responses/ExceptionResponse'
-
-  /json/membersManager/createSpecificMember:
-    post:
-      tags:
-        - MembersManager
-      operationId: createSpecificMember
-      summary: Creates a new member from candidate which is prepared for creating specificUser.
-      parameters:
-        - { name: candidate, in: query, required: true, schema: { $ref: '#/components/schemas/Candidate'}, description: 'candidate'}
-        - $ref: '#/components/parameters/voId'
-        - $ref: '#/components/parameters/specificUserType'
-        - $ref: '#/components/parameters/specificUserOwners'
-      responses:
-        '200':
-          $ref: '#/components/responses/MemberResponse'
-        default:
-          $ref: '#/components/responses/ExceptionResponse'
-
-  /urlinjsonout/membersManager/removeSponsor:
-    post:
-      tags:
-        - MembersManager
-      operationId: removeSponsor
-      summary: Removes sponsor of existing member.
-      parameters:
-        - $ref: '#/components/parameters/memberId'
-        - $ref: '#/components/parameters/sponsor'
-      responses:
-        '200':
-          $ref: '#/components/responses/VoidResponse'
-        default:
-          $ref: '#/components/responses/ExceptionResponse'
-
-  /urlinjsonout/membersManager/deleteMember:
-    post:
-      tags:
-        - MembersManager
-      operationId: deleteMember
-      summary: Deletes only member data appropriated by member id.
-      parameters:
-        - $ref: '#/components/parameters/memberId'
-      responses:
-        '200':
-          $ref: '#/components/responses/VoidResponse'
-        default:
-          $ref: '#/components/responses/ExceptionResponse'
-
-  /json/membersManager/getSponsoredMembers/v:
-    get:
-      tags:
-        - MembersManager
-      operationId: getSponsoredMembers
-      summary: Gets members from VO who are sponsored.
-      parameters:
-        - $ref: '#/components/parameters/voId'
-      responses:
-        '200':
-          $ref: '#/components/responses/ListOfRichMembersResponse'
-        default:
-          $ref: '#/components/responses/ExceptionResponse'
-
-  /json/membersManager/createSponsoredMember/withFullName:
-    post:
-      tags:
-        - MembersManager
-      operationId: createSponsoredMember
-      summary: Creates a new sponsored member in a given VO and namespace.
-      parameters:
-        - $ref: '#/components/parameters/firstName'
-        - $ref: '#/components/parameters/lastName'
-        - $ref: '#/components/parameters/titleBefore'
-        - $ref: '#/components/parameters/titleAfter'
-        - $ref: '#/components/parameters/password'
-        - $ref: '#/components/parameters/voId'
-        - $ref: '#/components/parameters/sponsor'
-        - $ref: '#/components/parameters/namespace'
-      responses:
-        '200':
-          $ref: '#/components/responses/RichMemberResponse'
         default:
           $ref: '#/components/responses/ExceptionResponse'
 
